@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Version3.4.0</title>
+</head>
+
+<body>
+    <div>
+        <button id="js_refreshBtn">刷新界面</button>
+        <div id="root" style="height: 500px;"></div>
+    </div>
+    <script src="https://cdn.bootcss.com/lodash.js/4.17.5/lodash.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/echarts/3.4.0/echarts.js"></script>
+    <script>
+        var option = {
+            title: {
+                text: "",
+                top: "3px"
+            },
+            dataZoom: [
+                {
+                    type: "slider",
+                    realtime: true,
+                    xAxisIndex: 0,
+                    showDataShadow: true,
+                    start: 0,
+                    end: 3
+                },
+                {
+                    type: "inside",
+                    showDataShadow: true
+                }
+            ],
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                },
+                right: "3%",
+                top: "3px"
+            },
+            grid: {
+                left: "3%",
+                top: "12.5%",
+                right: "5%",
+                containLabel: true
+            },
+            tooltip: {
+                trigger: "axis",
+                axisPointer: {
+                    type: "cross",
+                    label: {
+                        backgroundColor: "#6a7985",
+                        backgroundColor: "black",
+                        shadowColor: "#333"
+                    }
+                },
+                position: function (pos, params, el, elRect, size) {
+                    var obj = { top: 70 };
+                    var whichPos = undefined;
+                    var leftVal = 65;
+                    var contentWidth = size.contentSize[0] + leftVal;
+                    if (pos[0] > 0 && pos[0] < contentWidth) {
+                        whichPos = "right";
+                    } else if (
+                        pos[0] < size.viewSize[0] &&
+                        pos[0] > size.viewSize[0] - contentWidth
+                    ) {
+                        whichPos = "left";
+                    } else {
+                        whichPos = "left";
+                    }
+                    obj[whichPos] = leftVal;
+                    return obj;
+                }
+            },
+            legend: {
+                type: "scroll",
+                top: "5.5%",
+                left: "3%",
+                right: "3%"
+            },
+            xAxis: [
+                {
+                    type: "value"
+                }
+            ],
+            yAxis: [
+                {
+                    type: "value"
+                }
+            ],
+            dataZoom: [
+                {
+                    type: "slider"
+                }
+            ],
+            series: []
+        };
+        var echarts = window.echarts;
+        var instance = echarts.init($("#root")[0])
+        instance.setOption(option);
+        // register btn event 
+        $("#js_refreshBtn").click(() => {
+            instance.setOption(_.cloneDeep(option), true)
+        })
+    </script>
+</body>
+
+</html>
